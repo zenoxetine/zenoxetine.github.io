@@ -6,18 +6,6 @@ var F = null;
 
 var quotes = [
     [
-        "Can you even imagine",
-        "Fallin' like I did for the love of my life"
-    ],
-    [
-        "Are we fading lovers?",
-        "We keep wasting colors",
-        "Maybe we should let this go"
-    ],
-    [
-        "What's it like to be alone on a Sunday",
-    ],
-    [
         "And I don't care about my sleeping routine",
         "I fucked it up as it is",
         "But we've got so much time to kill"
@@ -32,30 +20,6 @@ var quotes = [
     ],
     [
         "Falling again, I need a pick-me-up"
-    ],
-    [
-        "I understand with me isn't quite the best place to be"
-    ],
-    [
-        "And baby if my love is bad",
-        "If it's not what you'd hoped for",
-        "You can ignore that",
-        "No need to give it back"
-    ],
-    [
-        "Stay up all night",
-        "Tell myself I'm alright"
-    ],
-    [
-        "Proud of me,",
-        "of my short list of accomplishments"
-    ],
-    [
-        "I am a Lost Boy from Neverland"
-    ],
-    [
-        "Peter Pan, Tinker Bell, Wendy Darling",
-        "Even Captain Hook, you are my perfect storybook"
     ],
     [
         "Are you lonely?"
@@ -73,12 +37,11 @@ window.mobileCheck = function() {
 };
 
 var currentQIndex = randomInteger(0, quotes.length-1);
-var currentImgIndex = randomInteger(0, 3-1);
 var isMobile = false;
 
 function preload() {
-    midImg = loadImage("./assets/"+currentImgIndex+".jpg");
-    F = loadFont('./assets/animeace2_reg.ttf');
+    midImg = loadImage("./assets/huggg.jpg");
+    F = loadFont('./assets/fonts/animeace2_reg.ttf');
     isMobile = mobileCheck();
 }
 
@@ -88,58 +51,56 @@ function setup() {
 }
 
 function draw() {
-    if (currentImgIndex == 0) {
-        background(250);
-    } else if (currentImgIndex == 1) {
-        background(210);
-    } else if (currentImgIndex == 2) {
-        background(255);
-    } 
+    background(250);
 
-    let xPos = width/2;
-    let yPos = height/2;
-
+    // put image
+    let xMid = width/2;
+    let yMid = height/2;
     imageMode(CENTER);
-    image(midImg, xPos, yPos);
+    image(midImg, xMid, yMid);
 
-    strokeWeight(1);
-    stroke(50, 50)
-    beginShape(LINES);
-    for (let lineAmount = 0; lineAmount < 5; ++lineAmount) {
-        let x = random(0, width);
-        let y = random(-300, height);
-        vertex(x, y);
-        vertex(x, y + random(300, 750));
-    }
-    endShape();
+    // lines glitch
+    push();
+        strokeWeight(1);
+        stroke(50, 50)
+        beginShape(LINES);
+        for (let lineAmount = 0; lineAmount < 5; ++lineAmount) {
+            let x = random(0, width);
+            let y = random(-300, height);
+            vertex(x, y);
+            vertex(x, y + random(300, 750));
+        }
+        endShape();
+    pop();
 
-    textFont(F);
-    if (isMobile) {
-        textSize(9);
-    } else {
-        textSize(12);
-    }
-    fill(20, 180);
-    noStroke();
-    let quote = quotes[currentQIndex];
-    for (let i = 0; i < quote.length; i++) {
-        let sentence = quote[i];
-        let x = width/2;
+    // display quotes
+    push();
+        textFont(F);
         if (isMobile) {
-            x = width/8;
+            textSize(9);
+        } else {
+            textSize(12);
         }
-        for (let ichar = 0; ichar < sentence.length; ichar++) {
-            text(sentence.charAt(ichar), random(x - 1, x + 1), random(height/4.5 - 1, height/4.5 + 1) + 24*i);
-            x += textWidth(sentence.charAt(ichar)) + 1;
+        fill(20, 180);
+        noStroke();
+        let quote = quotes[currentQIndex];
+        for (let i = 0; i < quote.length; i++) {
+            let sentence = quote[i];
+            let x = width/2;
+            if (isMobile) {
+                x = width/7;
+            }
+            for (let ichar = 0; ichar < sentence.length; ichar++) {
+                text(sentence.charAt(ichar), random(x - 1, x + 1), random(height/4 - 1, height/4 + 1) + 24*i);
+                x += textWidth(sentence.charAt(ichar)) + 1;
+            }
         }
-    }
 
-    if (frameCount > 0 && frameCount % 50 == 0) {
-        currentQIndex++;
-        if (currentQIndex >= quotes.length) {
-            currentQIndex = 0;
+        if (frameCount > 0 && frameCount % 25 == 0) {
+            currentQIndex++;
+            if (currentQIndex >= quotes.length) {
+                currentQIndex = 0;
+            }
         }
-    }
-
-    stroke(50);
+    pop();
 }
